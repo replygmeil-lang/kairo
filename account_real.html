@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <link rel="icon" href="icon.png">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KAIRO • Account</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+    body { background:#121212; color:#fff; }
+    .card { background: rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); }
+    .field { background: #1e1e1e; border:1px solid #2c2c2c; color:#fff; }
+    .btn-primary { background:#2563eb; }
+  </style>
+</head>
+<body class="min-h-screen text-white">
+  <div class="max-w-3xl mx-auto p-6">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-2xl font-semibold">Account & Preferences</h1>
+      <a href="index.html" class="text-sm px-3 py-2 rounded border border-gray-600 hover:bg-gray-600/20">Back to Chat</a>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4">Profile</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm mb-1">User name</label>
+          <input id="name" class="field w-full rounded px-3 py-2" placeholder="e.g., Alex" />
+        </div>
+        <div>
+          <label class="block text-sm mb-1">Work / Role</label>
+          <input id="work" class="field w-full rounded px-3 py-2" placeholder="e.g., Student, Developer" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card rounded-lg p-6 mb-6">
+      <h2 class="text-lg font-semibold mb-4">AI Reply Style</h2>
+      <label for="aiStyle" class="block text-sm mb-1">Choose AI reply style</label>
+      <select id="aiStyle" class="field w-full rounded px-3 py-2" title="AI reply style">
+        <option value="human">Human (neutral, clear)</option>
+        <option value="gen-z">Gen‑Z (casual, emoji-light)</option>
+        <option value="professional">Professional (formal)</option>
+        <option value="friendly">Friendly (warm)</option>
+      </select>
+    </div>
+
+    
+
+    <div class="flex items-center justify-end gap-3">
+      <button id="resetBtn" class="px-4 py-2 rounded border border-gray-600 hover:bg-gray-600/20">Reset</button>
+      <button id="saveBtn" class="btn-primary text-white px-4 py-2 rounded">Save</button>
+    </div>
+  </div>
+
+  <script>
+    const PREF_KEY = 'userPrefs';
+    function getPrefs(){
+      try { return JSON.parse(localStorage.getItem(PREF_KEY)) || {}; } catch { return {}; }
+    }
+    function setPrefs(p){
+      localStorage.setItem(PREF_KEY, JSON.stringify(p));
+    }
+    function load(){
+      const p = getPrefs();
+      document.getElementById('name').value = p.name || '';
+      document.getElementById('work').value = p.work || '';
+      document.getElementById('aiStyle').value = p.aiStyle || 'human';
+    }
+    function save(){
+      const p = {
+        name: document.getElementById('name').value.trim(),
+        work: document.getElementById('work').value.trim(),
+        aiStyle: document.getElementById('aiStyle').value
+      };
+      setPrefs(p);
+      alert('Saved!');
+    }
+    function reset(){
+      localStorage.removeItem(PREF_KEY);
+      load();
+    }
+    document.getElementById('saveBtn').addEventListener('click', save);
+    document.getElementById('resetBtn').addEventListener('click', reset);
+    window.addEventListener('load', load);
+  </script>
+</body>
+</html>
